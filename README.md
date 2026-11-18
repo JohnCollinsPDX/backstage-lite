@@ -13,7 +13,7 @@ The code matters, but the main exhibit is the paper trail:
 | Artifact | Where |
 |---|---|
 | Product requirements (problem, users, metrics, scope) | [`docs/prd.md`](docs/prd.md) |
-| Backlog: user stories with acceptance criteria | [GitHub Issues](../../issues) |
+| Backlog: epics and stories with acceptance criteria | Jira (private board; each PR copies its story's criteria, and board screenshots are in the case study) |
 | Agent operating model: standards, guardrails, definition of done | [`CLAUDE.md`](CLAUDE.md), [`docs/agent-workflow.md`](docs/agent-workflow.md) |
 | Decision records | [`docs/decisions/`](docs/decisions/) |
 | Agent-written PRs and my reviews | [Pull requests](../../pulls?q=is%3Apr) |
@@ -25,4 +25,4 @@ The code matters, but the main exhibit is the paper trail:
 
 ## Planned stack
 
-Next.js · Postgres · GitHub API. To be confirmed in a decision record.
+Next.js · Postgres · GitHub API · Jira Cloud API (read-only). To be confirmed in a decision record.

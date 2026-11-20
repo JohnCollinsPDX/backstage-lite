@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Owner** | John Collins (Product Owner) |
-| **Status** | Draft: discovery (3 of 7 questions resolved; Jira added to MVP) |
+| **Status** | Draft: discovery (6 of 7 questions resolved) |
 | **Backlog** | Jira (system of record, see [ADR 0005](decisions/0005-jira-as-backlog-system-of-record.md)) |
 | **Last updated** | 2026-11-17 |
 
@@ -27,11 +27,23 @@ The MVP is built around the platform lead's question: *"Across all our services,
 
 ## 3. Goals and success metrics
 
-**TBD.** Candidate metrics:
-- Catalog coverage: % of services registered with an owner
-- Scorecard compliance: % of services passing each standard ("has tests", "has runbook")
-- Time to find an owner or runbook (task-based test)
-- Weekly active users of the portal
+### Product metrics (measured against the demo environment)
+
+| Metric | MVP target (12-08) | v1 target (~12-22) |
+|---|---|---|
+| Catalog coverage: % of services registered with an owner and on-call | 100% of the 8 demo services | 100%, with unregistered repos flagged |
+| Time for a platform lead to name the owners of all services failing a given check | < 30 seconds from the standards overview | same |
+| Time for a responder to find a service's owner, on-call contact and runbook (task test) | < 1 minute | < 30 seconds (on-call quick-find) |
+| Scorecard pass rate per check | Visible for all 3 checks; baseline recorded | +20 points over baseline once the demo teams "fix" services |
+
+### Delivery metrics (from the agent delivery dashboard)
+
+| Metric | Target |
+|---|---|
+| MVP stories shipped by 12-08 | 100% of MVP-scoped stories |
+| Median cycle time (In Progress → merged) | < 1 day per story |
+| Rework rate (PRs needing changes after John's review) | Tracked; < 30% by v1 |
+| Token cost per story | Tracked; baseline at MVP |
 
 ## 4. Scope
 
@@ -45,24 +57,31 @@ The MVP is built around the platform lead's question: *"Across all our services,
   3. Declares an owner and an on-call contact in `catalog.yaml`
 - **Standards overview** for the platform lead: pass rate per check across all services, and the services failing each check with their owners
 - **Jira integration (read-only):** a service's `catalog.yaml` names its Jira project key. The service detail page shows open bug and incident counts with links into Jira, and the standards overview shows open-bug totals per team. (see [ADR 0004](decisions/0004-jira-integration-in-mvp.md))
-- Deploy status: TBD (see open questions)
 
-### Out of scope (draft)
+### Out of scope
 - Authentication / SSO beyond a basic login (TBD)
 - Plugin system
 - Real paging or on-call scheduling integrations; on-call is stored as data
 - Writing to Jira (creating or updating tickets from the portal)
 - An "open P1 bugs" scorecard check (v1 candidate)
+- **Deploy status:** moved to v1 to protect the MVP date after the Jira scope was added. v1 will read GitHub Deployments.
 - Any employer or real production data. The demo uses synthetic services only.
+
+### Demo environment
+The demo runs against a **dedicated free GitHub organization** (name TBD), so the fake services don't clutter John's personal profile and the portal reads them the way it would a real company's repos. (see [ADR 0006](decisions/0006-demo-services-in-dedicated-github-org.md))
+- **8 synthetic service repos** across **3 fictional teams** (for example, Payments, Identity and Platform)
+- Each repo has a `catalog.yaml` and just enough code and CI to be scored
+- A **deliberate mix of results**: some services pass every check, some are missing a runbook, some have failing CI, and one has no on-call contact, so the standards overview tells a story
+- No real company, people or data. All names are fictional.
 
 ## 5. Open questions
 
 1. ~~Who is the primary persona for the MVP?~~ **Resolved:** the platform lead (ADR 0002).
 2. ~~How do services get into the catalog?~~ **Resolved:** a `catalog.yaml` in each repo (ADR 0003).
 3. ~~Which scorecard checks ship in the MVP?~~ **Resolved:** README/runbook, tests + CI, owner + on-call. Branch protection deferred to v1.
-4. Where does "deploy status" come from: GitHub Releases, Deployments, or Actions runs? Is it in the MVP at all?
-5. Where do the synthetic demo services live (a dedicated GitHub org, or repos under John's account), and how many?
-6. What targets go with the success metrics?
+4. ~~Where does deploy status come from, and is it in the MVP?~~ **Resolved:** deferred to v1, which will read GitHub Deployments.
+5. ~~Where do the demo services live, and how many?~~ **Resolved:** a dedicated GitHub org with 8 repos across 3 teams (ADR 0006).
+6. ~~What targets go with the success metrics?~~ **Resolved:** see §3.
 7. Which Jira projects and synthetic bugs/incidents seed the demo, and which Jira issue types count as "incident"?
 
 ## 6. Milestones
@@ -70,7 +89,7 @@ The MVP is built around the platform lead's question: *"Across all our services,
 | Milestone | Target | Contents |
 |---|---|---|
 | MVP | **2026-12-08** (was 12-01, moved for Jira scope, ADR 0004) | catalog.yaml sync, catalog list + detail, 3 scorecard checks, standards overview, read-only Jira bug/incident counts, deployed demo |
-| v1 | ~2026-12-22 | TBD: candidates are deploy status, branch-protection check, open-P1 scorecard check, score trend over time, on-call quick-find |
+| v1 | ~2026-12-22 | **Deploy status** (GitHub Deployments) as the headline; candidates: branch-protection check, open-P1 scorecard check, score trend over time, on-call quick-find |
 
 ## 7. Risks
 
